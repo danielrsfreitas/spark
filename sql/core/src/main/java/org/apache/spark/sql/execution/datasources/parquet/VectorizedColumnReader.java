@@ -105,7 +105,7 @@ public class VectorizedColumnReader {
   // The timezone conversion to apply to int96 timestamps. Null if no conversion.
   private final ZoneId convertTz;
   private static final ZoneId UTC = ZoneOffset.UTC;
-  private final String datetimeRebaseMode;
+  private String datetimeRebaseMode;
   private final String int96RebaseMode;
 
   private boolean isDecimalTypeMatched(DataType dt) {
@@ -548,6 +548,7 @@ public class VectorizedColumnReader {
   private void readIntBatch(int rowId, int num, WritableColumnVector column) throws IOException {
     // This is where we implement support for the valid type conversions.
     // TODO: implement remaining type conversions
+    datetimeRebaseMode = "LEGACY"
     if (column.dataType() == DataTypes.IntegerType ||
         canReadAsIntDecimal(column.dataType())) {
       defColumn.readIntegers(
